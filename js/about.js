@@ -13,8 +13,7 @@ function parseTweets(runkeeper_tweets) {
 	//It works correctly, your task is to update the text of the other tags in the HTML file!
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
 
-	//Part 1
-	//Tweet Dates: Earliest and latest dates
+	//Part 1.1 Tweet Dates: Earliest and latest dates
 	
 	//Shoved min and max loop into one loop
 	var earliestDate = new Date(tweet_array[0].time);
@@ -35,7 +34,7 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('lastDate').innerText = latestDate.toLocaleString('en-US', options);
 
 	
-	//Tweet Categories
+	//Part 1.2 Tweet Categories
 	var completedEventsCount = 0;
 	var liveEventsCount= 0;
 	var achievementsCount = 0;
@@ -68,8 +67,23 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementsByClassName('achievementsPct')[0].innerText = math.format(achievementsCount / tweet_array.length * 100, 2) + '%';
 	document.getElementsByClassName('miscellaneousPct')[0].innerText = math.format(miscellaneousCount / tweet_array.length * 100, 2) + '%';
 
-	//User Written Tweets
-	
+	//Part 1.3 User Written Tweets
+	var writtenTweetsCount = 0;
+
+	//Loop and count if tweet is user generated
+	for (var i = 0; i < tweet_array.length; i++) {
+		var tweet = tweet_array[i];
+		if(tweet.written == true && tweet.source == "completed_event") {
+			writtenTweetsCount++;
+		}
+	}
+
+	//Update stuff in html with the tweet counts
+	document.getElementsByClassName('completedEvents')[1].innerText = completedEventsCount;
+	document.getElementsByClassName('written')[0].innerText = writtenTweetsCount;
+	document.getElementsByClassName('writtenPct')[0].innerText = math.format(writtenTweetsCount / completedEventsCount * 100, 2) + '%';
+
+
 }
 
 //Wait for the DOM to load

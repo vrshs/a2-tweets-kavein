@@ -18,13 +18,15 @@ class Tweet {
             return "achievement";
         }
 
-
         return "miscellaneous";
     }
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
         //TODO: identify whether the tweet is written
+        if(this.text.includes('-')){
+            return true;
+        }
         return false;
     }
 
@@ -33,7 +35,14 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return "";
+        
+        //Start from the dash ends when you the link(https://[random stuff here])
+        var strippedText = "";
+        var startIndex = this.text.indexOf('-') + 1;
+        var endIndex = this.text.indexOf('https://');
+
+        strippedText = this.text.substring(startIndex, endIndex);
+        return strippedText;
     }
 
     get activityType():string {
