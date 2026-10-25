@@ -42,20 +42,15 @@ function parseTweets(runkeeper_tweets) {
 	var miscellaneousCount = 0;
 
 	//Loop thru the tweets, add to counter if tweet matches category.
-	for(var i = 0; i < tweet_array.length; i++) {
-		//Completed events
-		if(tweet_array[i].text.startsWith('Just completed') || tweet_array[i].text.startsWith('Just posted')){
+	for(var i = 0; i < tweet_array.length; i++)
+	{
+		var category = tweet_array[i].source;
+		if(category === "completed_event") {
 			completedEventsCount++;
-		
-		//Live events
-		} else if(tweet_array[i].text.startsWith('Watch my')){
+		} else if(category === "live_event") {
 			liveEventsCount++;
-
-		//Achievements
-		} else if(tweet_array[i].text.startsWith('Achieved a new personal record')){
+		} else if(category === "achievement") {
 			achievementsCount++;
-
-		//Everything else
 		} else {
 			miscellaneousCount++;
 		}
@@ -72,8 +67,6 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementsByClassName('liveEventsPct')[0].innerText = math.format(liveEventsCount / tweet_array.length * 100, 2) + '%';
 	document.getElementsByClassName('achievementsPct')[0].innerText = math.format(achievementsCount / tweet_array.length * 100, 2) + '%';
 	document.getElementsByClassName('miscellaneousPct')[0].innerText = math.format(miscellaneousCount / tweet_array.length * 100, 2) + '%';
-
-
 
 	//User Written Tweets
 	
