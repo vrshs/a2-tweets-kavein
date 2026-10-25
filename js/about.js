@@ -62,13 +62,16 @@ function parseTweets(runkeeper_tweets) {
 	}
 
 	//Update with tweet counts
-	document.getElementsByClassName('completedEvents').innerText = completedEventsCount;
-	document.getElementsByClassName('liveEvents').innerText = liveEventsCount;
-	document.getElementsByClassName('achievements').innerText = achievementsCount;
-	document.getElementsByClassName('miscellaneous').innerText = miscellaneousCount;
+	document.getElementsByClassName('completedEvents')[0].innerText = completedEventsCount;
+	document.getElementsByClassName('liveEvents')[0].innerText = liveEventsCount;
+	document.getElementsByClassName('achievements')[0].innerText = achievementsCount;
+	document.getElementsByClassName('miscellaneous')[0].innerText = miscellaneousCount;
 
-	//Turn into percents and update again
-	//document.getElementsByClassName('completedEvents')
+	//Turn into percents and update
+	document.getElementsByClassName('completedEventsPct')[0].innerText = math.format(completedEventsCount / tweet_array.length * 100, 2) + '%';
+	document.getElementsByClassName('liveEventsPct')[0].innerText = math.format(liveEventsCount / tweet_array.length * 100, 2) + '%';
+	document.getElementsByClassName('achievementsPct')[0].innerText = math.format(achievementsCount / tweet_array.length * 100, 2) + '%';
+	document.getElementsByClassName('miscellaneousPct')[0].innerText = math.format(miscellaneousCount / tweet_array.length * 100, 2) + '%';
 
 
 
