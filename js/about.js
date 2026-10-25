@@ -15,10 +15,10 @@ function parseTweets(runkeeper_tweets) {
 
 	//Part 1
 	//Tweet Dates: Earliest and latest dates
-	var earliestDate = new Date(tweet_array[0].date);
-	var latestDate = new Date(tweet_array[0].date);
+	var earliestDate = new Date(tweet_array[0].time);
+	var latestDate = new Date(tweet_array[0].time);
 	for(var i = 0; i < tweet_array.length; i++) {
-		var tweetDate = new Date(tweet_array[i].date);
+		var tweetDate = new Date(tweet_array[i].time);
 		if(tweetDate < earliestDate) {
 			earliestDate = tweetDate;
 		}
@@ -26,12 +26,13 @@ function parseTweets(runkeeper_tweets) {
 			latestDate = tweetDate;
 		}
 	}
-	earliestDate = earliestDate.toLocaleString();
-	latestDate = latestDate.toLocaleString();
+	//Format: Day of week, Month, Day, Year
+	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-	document.getElementById('firstDate').innerText = earliestDate;
-	document.getElementById('lastDate').innerText = latestDate;
+	document.getElementById('firstDate').innerText = earliestDate.toLocaleString('en-US', options);
+	document.getElementById('lastDate').innerText = latestDate.toLocaleString('en-US', options);
 
+	
 	//Tweet Categories
 
 	//User Written Tweets
