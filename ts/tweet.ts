@@ -56,8 +56,6 @@ class Tweet {
             return "bike";
         if (this.text.includes('walk'))
             return "walk";
-        if (this.text.includes('swim'))
-            return "swim";
         return "unknown";
     }
 

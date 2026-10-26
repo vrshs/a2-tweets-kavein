@@ -15,7 +15,6 @@ function parseTweets(runkeeper_tweets) {
 
 	var runCount = 0;
 	var bikeCount = 0;
-	var swimCount = 0;
 	var walkCount = 0;
 	for (var i = 0; i < tweet_array.length; i++)
 	{
@@ -24,8 +23,6 @@ function parseTweets(runkeeper_tweets) {
 			runCount++;
 		} else if(activity == 'bike') {
 			bikeCount++;
-		} else if(activity == 'swim') {
-			swimCount++;
 		} else if(activity == 'walk') {
 			walkCount++;
 		}
@@ -35,7 +32,6 @@ function parseTweets(runkeeper_tweets) {
 	var activityCounts = [
 		{name: 'run', count: runCount, avgDistance: 0},
 		{name: 'bike', count: bikeCount, avgDistance: 0},
-		{name: 'swim', count: swimCount, avgDistance: 0},
 		{name: 'walk', count: walkCount, avgDistance: 0}
 	];
 	activityCounts.sort(function(a, b) {
@@ -107,17 +103,98 @@ function parseTweets(runkeeper_tweets) {
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
+
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {
-	    "values": tweet_array
-	  }
+	    "values": activityCounts
+	  },
 	  //TODO: Add mark and encoding
+	  "mark": "bar",
+	  "encoding": {
+	    "x": {
+	      "field": "name",
+	      "type": "nominal",
+	      "order": "descending"
+	    },
+	    "y": {
+	      "field": "count",
+	      "aggregate": "sum",
+	      "type": "quantitative"
+	    }
+	  }
 	};
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
+
+	//Lists for graphs
+	var topThreeActivities = ["run", "bike", "walk"];
+	var filteredTweets = [];
+
+	for (var i = 0; i < tweet_array.length; i++) 
+	{
+		var tweet = tweet_array[i];
+		if(topThreeActivities.includes(tweet.activityType) && !isNaN(tweet.distance)) {
+			filteredTweets.push({
+				activityType: tweet.activityType,
+				distance: tweet.distance,
+				day: tweet.time.toLocaleDateString('en-US', { weekday: 'long' })
+			});
+		}
+	}
+	distanceVis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of distances by day of the week for the three most tweeted about activities.",
+	  "data": {
+	    "values": filteredTweets
+	  },
+	  "mark": "point",
+	  "encoding": {
+	    "x": {
+	      "field": "day",
+	      "type": "nominal",
+		  "unit": "day"
+	    },
+	    "y": {
+	      "field": "distance",
+	      "type": "quantitative"
+	    },
+	    "color": {
+	      "field": "activityType",
+	      "type": "nominal"
+	    }
+	  }
+	};
+	vegaEmbed('#distanceVis', distanceVis_spec, {actions:false});
+
+	distanceVisAggregated_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of distances by day of the week for the three most tweeted about activities but agregated.",
+	  "data": {
+	    "values": filteredTweets
+	  },
+	  "mark": "point",
+	  "encoding": {
+	    "x": {
+	      "field": "day",
+	      "type": "nominal",
+		  "unit": "day"
+	    },
+	    "y": {
+	      "field": "distance",
+	      "aggregate": "mean",
+	      "type": "quantitative"
+	    },
+	    "color": {
+	      "field": "activityType",
+	      "type": "nominal"
+	    }
+	  }
+	};
+	vegaEmbed('#distanceVisAggregated', distanceVisAggregated_spec, {actions:false});
+
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
 }
 
