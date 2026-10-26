@@ -144,7 +144,17 @@ function parseTweets(runkeeper_tweets) {
 			});
 		}
 	}
-	distanceVis_spec = {
+
+	var currentGraph;
+
+
+
+	//Alternate graphs with button presses, graph will be put into showgraph variable
+	var showGraph = false;
+
+	function updateShownGraph() {
+		if(showGraph == true){
+		currentGraph = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of distances by day of the week for the three most tweeted about activities.",
 	  "data": {
@@ -167,12 +177,13 @@ function parseTweets(runkeeper_tweets) {
 	    }
 	  }
 	};
-	vegaEmbed('#distanceVis', distanceVis_spec, {actions:false});
-
-	distanceVisAggregated_spec = {
-	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-	  "description": "A graph of distances by day of the week for the three most tweeted about activities but agregated.",
-	  "data": {
+		  //Button text change here
+	  document.getElementById('aggregate').innerText = "Show means";
+} else {
+		currentGraph = {
+	  	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  	"description": "A graph of distances by day of the week for the three most tweeted about activities but agregated.",
+	  	"data": {
 	    "values": filteredTweets
 	  },
 	  "mark": "point",
@@ -193,9 +204,23 @@ function parseTweets(runkeeper_tweets) {
 	    }
 	  }
 	};
-	vegaEmbed('#distanceVisAggregated', distanceVisAggregated_spec, {actions:false});
+	document.getElementById('aggregate').innerText = "Show all activities";
+	}
 
+	//render graph here
+	vegaEmbed('#distanceVisAggregated', currentGraph, {actions:false});
+	}
+
+	//button text
+	document.getElementById('aggregate').addEventListener('click', function() {
+		showGraph = !showGraph;
+		updateShownGraph();
+	});
+	updateShownGraph(); // Initial display of the graph
+		
+	
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
+
 }
 
 //Wait for the DOM to load
