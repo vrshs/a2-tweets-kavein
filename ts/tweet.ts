@@ -50,7 +50,15 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        if (this.text.includes('run'))
+            return "run";
+        if (this.text.includes('bike'))
+            return "bike";
+        if (this.text.includes('walk'))
+            return "walk";
+        if (this.text.includes('swim'))
+            return "swim";
+        return "unknown";
     }
 
     get distance():number {
@@ -58,7 +66,25 @@ class Tweet {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
-        return 0;
+        //Reference tweet: Just completed a 5.25 km run with @Runkeeper.
+        //Reference tweet 2: Just completed a 12.06 mi run
+        var startIndex = this.text.indexOf('a ') + 2;
+        var kilometers = false;
+        var endIndex = this.text.indexOf(' km');
+        if (endIndex === -1) {
+            endIndex = this.text.indexOf(' mi');
+        } else {
+            kilometers = true;
+        }
+        
+        //1 mi = 1,609 km, converting to miles
+        var distanceString = this.text.substring(startIndex, endIndex);
+        var distance = parseFloat(distanceString);
+        if(kilometers) {
+            distance *= 1.609;
+        }
+
+        return distance;
     }
 
     getHTMLTableRow(rowNumber:number):string {

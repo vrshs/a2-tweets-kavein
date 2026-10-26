@@ -9,6 +9,51 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
+	//Part 2.1 Determining activity type and distances
+	//updating text here
+	document.getElementById('numberActivities').innerText = '3';
+
+	var runCount = 0;
+	var bikeCount = 0;
+	var swimCount = 0;
+	var walkCount = 0;
+	for (var i = 0; i < tweet_array.length; i++)
+	{
+		var activity = tweet_array[i].activityType;
+		if(activity === 'run') {
+			runCount++;
+		} else if(activity === 'bike') {
+			bikeCount++;
+		} else if(activity === 'swim') {
+			swimCount++;
+		} else if(activity === 'walk') {
+			walkCount++;
+		}
+	}
+
+	//Note: searched up dictionary syntax on web
+	var activityCounts = [
+		{name: 'run', count: runCount},
+		{name: 'bike', count: bikeCount},
+		{name: 'swim', count: swimCount},
+		{name: 'walk', count: walkCount}
+	];
+	activityCounts.sort(function(a, b) {
+		return b.count - a.count;
+	});
+	var firstMostFrequentActivity = activityCounts[0];
+	var secondMostFrequentActivity = activityCounts[1];
+	var thirdMostFrequentActivity = activityCounts[2];
+
+	document.getElementById('firstMost').innerText = firstMostFrequentActivity.name;
+	document.getElementById('secondMost').innerText = secondMostFrequentActivity.name;
+	document.getElementById('thirdMost').innerText = thirdMostFrequentActivity.name;
+	
+
+
+
+
+
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
 	activity_vis_spec = {
