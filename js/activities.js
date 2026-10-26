@@ -204,6 +204,7 @@ function parseTweets(runkeeper_tweets) {
 	    }
 	  }
 	};
+	//other button text change here
 	document.getElementById('aggregate').innerText = "Show all activities";
 	}
 
@@ -211,12 +212,14 @@ function parseTweets(runkeeper_tweets) {
 	vegaEmbed('#distanceVisAggregated', currentGraph, {actions:false});
 	}
 
-	//button text
+	//button click event
 	document.getElementById('aggregate').addEventListener('click', function() {
 		showGraph = !showGraph;
 		updateShownGraph();
 	});
-	updateShownGraph(); // Initial display of the graph
+	
+	//graph display for first load
+	updateShownGraph();
 		
 	
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
